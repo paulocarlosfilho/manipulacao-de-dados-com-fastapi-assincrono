@@ -1,3 +1,4 @@
+import uuid
 from datetime import datetime, timedelta
 from typing import Optional
 from jose import JWTError, jwt
@@ -21,11 +22,23 @@ def get_password_hash(password):
 
 def create_access_token(data: dict, expires_delta: Optional[timedelta] = None):
     to_encode = data.copy()
+    now = datetime.utcnow()
+    
     if expires_delta:
-        expire = datetime.utcnow() + expires_delta
+        expire = now + expires_delta
     else:
-        expire = datetime.utcnow() + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
+        expire = now + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+    
+    # Adicionando os campos que você viu no vídeo para ficar mais profissional:
+    to_encode.update({
+        "iss": "curso-fastapi.com.br",           # Quem emitiu o token
+        "aud": "curso-fastapi",                  # Público alvo do token
+        "exp": expire,                           # Data de expiração (os 30 min que você queria)
+        "iat": now,                              # Data em que foi criado (Issued At)
+        "nbf": now,                              # Não usar antes de (Not Before)
+        "jti": uuid.uuid4().hex                  # ID único para o token (evita ataques de replay)
+    })
+    
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
     return encoded_jwt
 
