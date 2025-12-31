@@ -1,7 +1,7 @@
 import sqlalchemy as sa
-from database import metadata
+from ..database import metadata
 
-post = sa.Table(
+post_table = sa.Table(
     "post",
     metadata,
     sa.Column("id", sa.Integer, primary_key=True),

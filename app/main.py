@@ -1,16 +1,8 @@
-import sqlalchemy as sa
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
-from database import engine, metadata, init_db
-from auth import create_access_token, get_current_user, verify_password, get_password_hash
-from datetime import timedelta
-# Note: I'm keeping the original import structure as much as possible
-# but since controllers/post.py doesn't exist, I'll assume it's post.py in the root
-try:
-    from controllers import post
-except ImportError:
-    import post
-
+from .database import init_db
+from .auth import create_access_token, get_current_user, verify_password, get_password_hash
+from .routers import post
 from contextlib import asynccontextmanager
 
 @asynccontextmanager
@@ -18,10 +10,9 @@ async def lifespan(app: FastAPI):
     # Startup: Initialize database
     await init_db()
     yield
-    # Shutdown: Close database connections
-    await engine.dispose()
 
 app = FastAPI(lifespan=lifespan)
+
 # Mock de usuário (Em um sistema real, isso viria do banco de dados)
 FAKE_USERS_DB = {
     "admin": {
@@ -47,8 +38,4 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 async def read_users_me(current_user: str = Depends(get_current_user)):
     return {"username": current_user}
 
-if hasattr(post, "router"):
-    # Exemplo de como proteger todas as rotas de um router (opcional)
-    # app.include_router(post.router, dependencies=[Depends(get_current_user)])
-    app.include_router(post.router)
-
+app.include_router(post.router)
