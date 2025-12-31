@@ -9,6 +9,8 @@ def anyio_backend():
 
 @pytest_asyncio.fixture(scope="session")
 async def client():
+    # Usamos o LifespanManager implicitamente através do ASGITransport
+    # mas garantimos que o client seja fechado corretamente
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as ac:
         yield ac
 
