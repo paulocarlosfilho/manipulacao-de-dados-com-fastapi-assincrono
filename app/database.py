@@ -32,7 +32,11 @@ async def init_db():
             # Em ambiente de teste, podemos querer recriar as tabelas
             if os.getenv("ENV") == "test":
                 print("Test environment detected. Dropping tables...")
-                await conn.run_sync(metadata.drop_all)
+                # Segurança extra: garante que estamos no banco de teste ou localhost
+                if "blog_db" in DATABASE_URL or "localhost" in DATABASE_URL:
+                    await conn.run_sync(metadata.drop_all)
+                else:
+                    print("Skipping drop_all for safety: DATABASE_URL doesn't look like a test DB.")
             
             await conn.run_sync(metadata.create_all)
             print("Database initialized successfully.")
