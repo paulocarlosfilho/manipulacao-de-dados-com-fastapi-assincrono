@@ -1,6 +1,6 @@
 # Variáveis
 PYTHON = python3
-VENV = .venv
+VENV = /home/$(USER)/.venv_blog
 PIP = $(VENV)/bin/pip
 UVICORN = $(VENV)/bin/uvicorn
 DOCKER_COMPOSE = docker compose
@@ -9,13 +9,14 @@ DOCKER_COMPOSE = docker compose
 
 help:
 	@echo "Comandos disponíveis:"
-	@echo "  install    - Cria venv e instala as dependências"
+	@echo "  install    - Cria venv (no HOME do WSL) e instala as dependências"
 	@echo "  up         - Sobe o banco de dados PostgreSQL via Docker"
 	@echo "  down       - Para o banco de dados PostgreSQL"
 	@echo "  restart    - Reinicia o banco de dados"
 	@echo "  run-app    - Inicia a aplicação FastAPI usando o venv"
 	@echo "  clean      - Remove venv, __pycache__ e o banco SQLite antigo"
 	@echo "  test       - Executa os testes automatizados"
+	@echo "  test-cov   - Executa os testes com relatório de cobertura"
 	@echo "  tf-init    - Inicializa o Terraform"
 	@echo "  tf-plan    - Mostra o plano de execução do Terraform"
 	@echo "  tf-apply   - Aplica as mudanças do Terraform na AWS"
@@ -23,6 +24,7 @@ help:
 	@echo "  ci-local   - Simula o pipeline de CI localmente (Docker + Testes)"
 
 install:
+	rm -rf $(VENV)
 	$(PYTHON) -m venv $(VENV)
 	$(PIP) install --upgrade pip
 	$(PIP) install -r requirements.txt
@@ -45,7 +47,10 @@ clean:
 	rm -f blog.db
 
 test:
-	export PYTHONPATH=$$PYTHONPATH:. && export DATABASE_URL="postgresql+asyncpg://user:password@localhost/blog_db" && $(VENV)/bin/pytest tests/ -v
+	export PYTHONPATH=$$PYTHONPATH:. && export DATABASE_URL="postgresql+asyncpg://user:password@localhost/blog_db" && .venv/bin/pytest tests/ -v
+
+test-cov:
+	export PYTHONPATH=$$PYTHONPATH:. && export DATABASE_URL="postgresql+asyncpg://user:password@localhost/blog_db" && .venv/bin/pytest --cov=app tests/ -v
 
 tf-init:
 	terraform -chdir=terraform init
