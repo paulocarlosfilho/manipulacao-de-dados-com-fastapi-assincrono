@@ -15,7 +15,32 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://user:password@localhost/blog_db")
 
-engine = create_async_engine(DATABASE_URL, echo=True, poolclass=NullPool)
+# Tratamento robusto para a URL do banco (Render usa postgres:// por padrão)
+if DATABASE_URL.startswith("postgres://"):
+    DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
+elif DATABASE_URL.startswith("postgresql://") and "+asyncpg" not in DATABASE_URL:
+    DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
+
+# Alerta de segurança/configuração
+if "localhost" in DATABASE_URL and os.getenv("ENV") == "prod":
+    logger.error("ERRO CRÍTICO: DATABASE_URL está usando 'localhost' em ambiente de PRODUÇÃO!")
+
+# Configuração para o Render/Postgres Externo (SSL é obrigatório no Render)
+connect_args = {}
+if "render.com" in DATABASE_URL or os.getenv("ENV") == "prod":
+    connect_args = {
+        "ssl": "require",
+        "server_settings": {
+            "tcp_user_timeout": "10000",
+        }
+    }
+
+engine = create_async_engine(
+    DATABASE_URL, 
+    echo=True, 
+    poolclass=NullPool,
+    connect_args=connect_args
+)
 async_session = sessionmaker(
     engine, class_=AsyncSession, expire_on_commit=False
 )
