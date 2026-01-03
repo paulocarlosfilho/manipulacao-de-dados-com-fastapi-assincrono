@@ -15,11 +15,22 @@ load_dotenv()
 
 DATABASE_URL = os.getenv("DATABASE_URL", "postgresql+asyncpg://user:password@localhost/blog_db")
 
-# Tratamento robusto para a URL do banco (Render usa postgres:// por padrão)
+# Limpeza agressiva para evitar erros de copy-paste (psql, aspas, espaços)
+DATABASE_URL = DATABASE_URL.strip().strip("'").strip('"')
+if DATABASE_URL.startswith("psql "):
+    DATABASE_URL = DATABASE_URL.replace("psql ", "", 1).strip().strip("'").strip('"')
+
+# Tratamento para drivers assíncronos
 if DATABASE_URL.startswith("postgres://"):
     DATABASE_URL = DATABASE_URL.replace("postgres://", "postgresql+asyncpg://", 1)
 elif DATABASE_URL.startswith("postgresql://") and "+asyncpg" not in DATABASE_URL:
     DATABASE_URL = DATABASE_URL.replace("postgresql://", "postgresql+asyncpg://", 1)
+
+# Remove parâmetros de query que podem quebrar o parser do SQLAlchemy/asyncpg
+if "?" in DATABASE_URL:
+    base_url, query = DATABASE_URL.split("?", 1)
+    # Mantemos apenas o que é essencial se necessário, ou limpamos tudo para usar connect_args
+    DATABASE_URL = base_url
 
 # Alerta de segurança/configuração
 if "localhost" in DATABASE_URL and os.getenv("ENV") == "prod":
