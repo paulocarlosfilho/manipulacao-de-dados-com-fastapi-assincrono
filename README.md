@@ -19,6 +19,13 @@ Para uma visão detalhada das competências técnicas aplicadas neste projeto, c
 
 ---
 
+## 🌍 Projeto em Produção (Live)
+O projeto está hospedado e pode ser acessado publicamente:
+- **Frontend & API**: [https://manipulacao-de-dados-com-fastapi.onrender.com](https://manipulacao-de-dados-com-fastapi.onrender.com)
+- **Banco de Dados**: Gerenciado via [Neon.tech](https://neon.tech/) (PostgreSQL Serverless).
+
+---
+
 ## 🚀 Tecnologias
 - **FastAPI**: Framework web moderno e rápido.
 - **PostgreSQL**: Banco de dados relacional.
