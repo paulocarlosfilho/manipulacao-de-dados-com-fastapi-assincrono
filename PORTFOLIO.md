@@ -35,6 +35,10 @@ Este projeto não é apenas um sistema de blog; é uma demonstração de compet�
   - Execução da suíte completa de testes assíncronos.
 - **Testes Automatizados**: Suíte de testes com **Pytest** cobrindo fluxos críticos de CRUD e Autenticação.
 - **Makefile**: Padronização de comandos para instalação, execução de testes, gerenciamento de containers e operações do Terraform.
+- **Desenvolvimento Assistido por IA (Generative AI)**: 
+  - **Eficiência de Engenharia**: Uso estratégico de IA Generativa (como Trae/Claude/GPT) atuando como um **Senior Pair Programmer**.
+  - **Code Review & Debugging**: Utilização da IA para identificar vulnerabilidades de segurança (ex: exposição de credenciais), propor refatorações para código assíncrono e acelerar a resolução de erros complexos.
+  - **Produtividade DevOps**: Aceleração na escrita de manifestos Kubernetes e configurações de pipelines de CI/CD, garantindo conformidade com as melhores práticas de mercado em tempo reduzido.
 
 ---
 

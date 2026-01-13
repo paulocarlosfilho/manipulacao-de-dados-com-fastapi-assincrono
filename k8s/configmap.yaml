@@ -4,4 +4,3 @@ metadata:
   name: fastapi-config
 data:
   ENV: "prod"
-  DATABASE_URL: "postgresql://neondb_owner:npg_RxbG7AyPr8vI@ep-weathered-heart-ahmdzhec-pooler.c-3.us-east-1.aws.neon.tech/neondb"

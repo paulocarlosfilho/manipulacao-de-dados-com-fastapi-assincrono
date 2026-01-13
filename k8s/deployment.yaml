@@ -23,6 +23,8 @@ spec:
         envFrom:
         - configMapRef:
             name: fastapi-config
+        - secretRef:
+            name: fastapi-secrets
         livenessProbe:
           httpGet:
             path: /health

@@ -56,10 +56,10 @@ clean:
 	rm -f blog.db
 
 test:
-	export PYTHONPATH=$$PYTHONPATH:. && export DATABASE_URL="postgresql+asyncpg://user:password@localhost/blog_db" && .venv/bin/pytest tests/ -v
+	export PYTHONPATH=$$PYTHONPATH:. && .venv/bin/pytest tests/ -v
 
 test-cov:
-	export PYTHONPATH=$$PYTHONPATH:. && export DATABASE_URL="postgresql+asyncpg://user:password@localhost/blog_db" && .venv/bin/pytest --cov=app tests/ -v
+	export PYTHONPATH=$$PYTHONPATH:. && .venv/bin/pytest --cov=app tests/ -v
 
 ci-local: down up test
 	@echo "Pipeline local finalizado com sucesso! Pronto para o push."

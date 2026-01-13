@@ -69,6 +69,7 @@ O projeto conta com monitoramento profissional via **Prometheus** e **Grafana**,
 - **JWT (JSON Web Tokens)**: Autenticação segura com Bearer tokens.
 - **Pytest**: Suíte de testes automatizados assíncronos.
 - **Makefile**: Para facilitar a execução de comandos comuns no ambiente WSL.
+- **IA Generativa**: Desenvolvido em regime de **Pair Programming com IA**, utilizando ferramentas de inteligência artificial para otimização de código, revisão de segurança e aceleração do setup de infraestrutura (DevOps).
 
 ## 🛠️ Como rodar o projeto
 
