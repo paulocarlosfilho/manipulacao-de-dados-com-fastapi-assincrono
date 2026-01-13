@@ -19,11 +19,13 @@ Este projeto não é apenas um sistema de blog; é uma demonstração de compet�
 - **Segurança de Senhas**: Utilização de `bcrypt` (através do `passlib`) para hashing seguro de senhas no banco de dados.
 - **Token Claims**: Configuração de claims padrão (`exp`, `iss`, `aud`, `iat`) para conformidade com padrões de segurança da indústria.
 
-### 3. Infraestrutura & Cloud (AWS/Terraform)
-- **Infraestrutura como Código (IaC)**: Provisionamento de uma infraestrutura completa na **AWS** via **Terraform**, incluindo:
-  - **Rede Customizada**: VPC, Subnets Públicas, Internet Gateway e Route Tables.
-  - **Compute**: Instância EC2 configurada via `user_data` para instalação automática de dependências.
-  - **Segurança**: Security Groups restritivos para tráfego HTTP e SSH.
+### 3. Infraestrutura & Cloud (Kubernetes/AWS)
+- **Orquestração de Containers (Kubernetes)**: Implementação de um cluster multi-node profissional utilizando **Kind**, demonstrando:
+  - **Alta Disponibilidade**: Configuração de múltiplas réplicas para evitar pontos únicos de falha.
+  - **Auto-Healing**: Uso de Probes (Liveness e Readiness) para que o cluster recupere pods automaticamente em caso de falha.
+  - **Escalabilidade**: Arquitetura pronta para escalar horizontalmente em ambientes como EKS ou GKE.
+  - **Observabilidade**: Integração de **Prometheus** e **Grafana** para monitoramento de métricas em tempo real, utilizando `prometheus-fastapi-instrumentator`.
+- **Cloud Foundations (AWS)**: Conhecimento sólido em serviços AWS (VPC, EC2, IAM, RDS), validado pela certificação **AWS Certified Cloud Practitioner**. Aplicação de boas práticas de segurança e rede no design da aplicação para nuvem.
 - **Orquestração**: Utilização de **Docker e Docker Compose** para garantir que o ambiente de desenvolvimento seja idêntico ao de produção.
 
 ### 4. Automação & Qualidade (DevOps/CI-CD)

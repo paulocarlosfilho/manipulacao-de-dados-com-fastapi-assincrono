@@ -3,6 +3,7 @@ from fastapi.security import OAuth2PasswordRequestForm
 from fastapi.responses import JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
+from prometheus_fastapi_instrumentator import Instrumentator
 import logging
 
 # Setup logging
@@ -49,8 +50,13 @@ async def global_exception_handler(request: Request, exc: Exception):
     logger.error(f"Unhandled error: {exc}", exc_info=True)
     return JSONResponse(
         status_code=500,
-        content={"detail": "Ocorreu um erro interno no servidor. Por favor, tente novamente mais tarde."},
+        content={"message": "Internal Server Error", "detail": str(exc)},
     )
+
+@app.get("/health", tags=["Monitoring"])
+async def health_check():
+    """Endpoint para monitoramento de saúde do Kubernetes (Liveness/Readiness)"""
+    return {"status": "healthy", "version": "1.0.0"}
 
 # Mock de usuário (Em um sistema real, isso viria do banco de dados)
 FAKE_USERS_DB = {
@@ -78,6 +84,9 @@ async def read_users_me(current_user: str = Depends(get_current_user)):
     return {"username": current_user}
 
 app.include_router(post.router)
+
+# Instrumentação do Prometheus (Mover para depois dos roteadores)
+Instrumentator().instrument(app).expose(app)
 
 # Mount Static Files
 app.mount("/", StaticFiles(directory="app/static", html=True), name="static")

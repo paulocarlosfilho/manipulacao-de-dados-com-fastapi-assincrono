@@ -5,6 +5,11 @@
 
 ---
 
+![Observabilidade com Grafana e Prometheus](3.png)
+*Painel de monitoramento (Grafana) exibindo métricas em tempo real da API*
+
+---
+
 ![Backend Code and Tests](1.png)
 *Estrutura de código assíncrono e execução de testes automatizados*
 
@@ -23,6 +28,36 @@ Para uma visão detalhada das competências técnicas aplicadas neste projeto, c
 O projeto está hospedado e pode ser acessado publicamente:
 - **Frontend & API**: [https://manipulacao-de-dados-com-fastapi.onrender.com](https://manipulacao-de-dados-com-fastapi.onrender.com)
 - **Banco de Dados**: Gerenciado via [Neon.tech](https://neon.tech/) (PostgreSQL Serverless).
+
+---
+
+## ☸️ Orquestração Kubernetes (Local & Produção)
+O projeto agora suporta orquestração via Kubernetes para alta disponibilidade:
+- **Arquitetura:** 1 Control-Plane e 3 Worker Nodes (simulado via Kind).
+- **Auto-Healing:** Configurado com 2 réplicas e Probes de Liveness/Readiness.
+- **Gerenciamento:** Comandos simplificados via `Makefile`.
+
+### **Comandos Kubernetes:**
+- `wsl make k8s-cluster`: Cria o cluster multi-node (1 CP, 3 Workers).
+- `wsl make k8s-deploy`: Faz o deploy da aplicação e configurações no cluster.
+- `wsl make k8s-forward`: Abre o túnel para acessar a API em `http://localhost:8000`.
+- `wsl make k8s-logs`: Monitora os logs dos pods em tempo real.
+- `wsl make k8s-monitoring`: Instala a stack de monitoramento (Prometheus + Grafana).
+- `wsl make k8s-grafana`: Abre o túnel para o Grafana em `http://localhost:3000`.
+- `wsl make k8s-prometheus`: Abre o túnel para o Prometheus em `http://localhost:9090`.
+- `wsl make k8s-grafana-url`: Mostra as credenciais de acesso ao Grafana.
+- `wsl make k8s-status`: Verifica a saúde dos nós, pods e serviços.
+
+---
+
+## 📊 Observabilidade
+O projeto conta com monitoramento profissional via **Prometheus** e **Grafana**, totalmente automatizado:
+- **Prometheus**: Coleta métricas de performance da API (latência, requisições, erros).
+- **Grafana**: Visualização em dashboards modernos.
+- **Automação**: O Grafana já inicia com o **Datasource (Prometheus)** e o **Dashboard (FastAPI Metrics)** pré-configurados via Sidecar (ConfigMaps).
+- **Acesso**: 
+  - Usuário: `admin`
+  - Senha: `admin`
 
 ---
 
@@ -77,13 +112,6 @@ O projeto está hospedado e pode ser acessado publicamente:
 6. **Acessar Documentação (Swagger)**
    Acesse `http://localhost:8000/docs` para interagir com a API.
 
-7. **Infraestrutura na AWS (Terraform)**
-   Para gerenciar a infraestrutura na nuvem:
-   - `wsl make tf-init`: Inicializa o Terraform.
-   - `wsl make tf-plan`: Visualiza as mudanças que serão feitas.
-   - `wsl make tf-apply`: Cria os recursos na AWS.
-   - `wsl make tf-destroy`: **Remove** tudo para evitar cobranças indesejadas.
-
 ## 📁 Estrutura de Arquivos
 
 - `app/`: Pasta principal da aplicação.
@@ -110,13 +138,9 @@ O banco utiliza `SQLAlchemy` com `asyncpg`. A criação das tabelas ocorre autom
 
 ---
 
-## 🚀 Roadmap e Próximos Passos (IaC)
-
-O projeto já conta com a base de código para automação de infraestrutura, permitindo que o próximo passo seja o deploy automatizado:
-
-### **Implementação de Infraestrutura como Código (IaC)**
+## 🚀 Roadmap e Próximos Passos
 - [x] **Dockerization**: `Dockerfile` pronto para produção.
-- [x] **Orquestração**: `docker-compose.yml` para ambientes locais e cloud.
-- [x] **Provisionamento AWS**: Arquivos de **Terraform** criados e prontos para uso na pasta `terraform/`.
-- [ ] **Deploy em Produção**: Executar o Terraform para subir a instância EC2 real.
-- [x] **CI/CD Pipeline**: Configurar GitHub Actions para automação de testes e deploy.
+- [x] **Orquestração**: Kubernetes com `kind` para alta disponibilidade local.
+- [x] **CI/CD Pipeline**: GitHub Actions para testes automatizados.
+- [x] **Monitoramento**: Prometheus e Grafana implementados no cluster Kubernetes.
+- [x] **Dashboard Automatizado**: Dashboards do Grafana via ConfigMaps.
